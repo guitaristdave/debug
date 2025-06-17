@@ -1,6 +1,20 @@
 <script>
 export default {
   name: "CameraComp",
+  data() {
+    return {
+      first: null,
+      second: null,
+      third: null,
+      forth: null,
+      fifth: null,
+      sixth: null,
+      seventh: null,
+      eighth: null,
+      ninth: null,
+      tenth: null,
+    };
+  },
   methods: {
     async cameraRequest() {
       await this.checkCameraPermission();
@@ -10,39 +24,43 @@ export default {
         navigator.mediaDevices
           .getUserMedia({ video: true })
           .then((media) => {
-            alert(
-              "SET_CAMERA_PERMISSION (getUserMedia success)\nmedia.active: " +
-                media.active
-            );
+            this.first =
+              "Line 23: SET_CAMERA_PERMISSION (getUserMedia success)\nmedia.active: " +
+              media.active;
           })
           .catch((err) => {
-            alert("getUserMedia error:\n" + err.name + " — " + err.message);
-            alert("SET_CAMERA_PERMISSION: false");
+            this.second =
+              "Line 28: getUserMedia error:\n" + err.name + " — " + err.message;
+            this.third = "Line 29: SET_CAMERA_PERMISSION: false";
           });
       };
 
       if (!navigator.permissions || !navigator.permissions.query) {
-        alert("Permissions API not supported. Fallback to getUserMedia.");
+        this.forth =
+          "Line 35: Permissions API not supported. Fallback to getUserMedia.";
         askPermissions();
       } else {
         try {
           const result = await navigator.permissions.query({ name: "camera" });
-          alert("Permissions query result.state: " + result.state);
+          this.fifth =
+            "Line 41: Permissions query result.state: " + result.state;
 
           if (result.state === "granted") {
-            alert("SET_CAMERA_PERMISSION: granted");
+            this.sixth = "Line 48: SET_CAMERA_PERMISSION: granted";
           } else if (result.state === "prompt") {
-            alert("SET_CAMERA_PERMISSION: prompt, requesting access...");
+            this.seventh =
+              "Line 51: SET_CAMERA_PERMISSION: prompt, requesting access...";
             askPermissions();
           } else if (result.state === "denied") {
-            alert("SET_CAMERA_PERMISSION: denied. Access blocked.");
+            this.eighth =
+              "Line 55: SET_CAMERA_PERMISSION: denied. Access blocked.";
           }
 
           result.onchange = () => {
-            alert("Permissions changed to: " + result.state);
+            this.ninth = "Line 59: Permissions changed to: " + result.state;
           };
         } catch (err) {
-          alert("Permissions query error:\n" + err.message);
+          this.tenth = "Line 63: Permissions query error:\n" + err.message;
           askPermissions();
         }
       }
@@ -59,6 +77,18 @@ export default {
 <template>
   <div>
     <button @click="cameraRequest">Разрешить доступ к камере</button>
+    <ol>
+      <li>{{ first }}</li>
+      <li>{{ second }}</li>
+      <li>{{ third }}</li>
+      <li>{{ forth }}</li>
+      <li>{{ fifth }}</li>
+      <li>{{ sixth }}</li>
+      <li>{{ seventh }}</li>
+      <li>{{ eighth }}</li>
+      <li>{{ ninth }}</li>
+      <li>{{ tenth }}</li>
+    </ol>
     <p v-if="isIOS">это iOS</p>
   </div>
 </template>
