@@ -10,27 +10,49 @@ export default {
         navigator.mediaDevices
           .getUserMedia({ video: true })
           .then((media) => {
-            console.log(
-              "SET_CAMERA_PERMISSION",
-              "media.active: ",
+            alert(
+              "SET_CAMERA_PERMISSION (getUserMedia success)\nmedia.active: " +
               media.active
             );
           })
-          .catch(() => {
-            console.log("SET_CAMERA_PERMISSION", false);
+          .catch((err) => {
+            alert(
+              "getUserMedia error:\n" + err.name + " — " + err.message
+            );
+            alert("SET_CAMERA_PERMISSION: false");
           });
       };
-      if (!navigator.permissions) {
-        // Устройства без поддержки Permissions API
+
+      if (!navigator.permissions || !navigator.permissions.query) {
+        alert("Permissions API not supported. Fallback to getUserMedia.");
         askPermissions();
       } else {
-        const result = await navigator.permissions.query({ name: "camera" });
-        if (result.state === "granted") {
-          console.log("SET_CAMERA_PERMISSION", "granted", true);
-        } else {
+        try {
+          const result = await navigator.permissions.query({ name: "camera" });
+          alert("Permissions query result.state: " + result.state);
+
+          if (result.state === "granted") {
+            alert("SET_CAMERA_PERMISSION: granted");
+          } else if (result.state === "prompt") {
+            alert("SET_CAMERA_PERMISSION: prompt, requesting access...");
+            askPermissions();
+          } else if (result.state === "denied") {
+            alert("SET_CAMERA_PERMISSION: denied. Access blocked.");
+          }
+
+          result.onchange = () => {
+            alert("Permissions changed to: " + result.state);
+          };
+        } catch (err) {
+          alert("Permissions query error:\n" + err.message);
           askPermissions();
         }
       }
+    },
+  },
+  computed: {
+    isIOS() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
     },
   },
 };
@@ -39,5 +61,6 @@ export default {
 <template>
   <div>
     <button @click="cameraRequest">Разрешить доступ к камере</button>
+    <p v-if="isIOS">это iOS</p>
   </div>
 </template>
