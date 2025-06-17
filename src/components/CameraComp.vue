@@ -12,7 +12,7 @@ export default {
       seventh: null,
       eighth: null,
       ninth: null,
-      tenth: null
+      tenth: null,
     };
   },
   methods: {
@@ -61,13 +61,13 @@ export default {
           askPermissions();
         }
       }
-    }
+    },
   },
   computed: {
     isIOS() {
       return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
-  }
+    },
+  },
 };
 </script>
 
