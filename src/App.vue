@@ -1,11 +1,13 @@
 <template>
-  <div></div>
+  <CameraComp></CameraComp>
 </template>
 
 <script>
+import CameraComp from "@/components/CameraComp.vue";
+
 export default {
   name: "App",
-  components: {},
+  components: { CameraComp },
 };
 </script>
 
