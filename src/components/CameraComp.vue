@@ -12,13 +12,11 @@ export default {
           .then((media) => {
             alert(
               "SET_CAMERA_PERMISSION (getUserMedia success)\nmedia.active: " +
-              media.active
+                media.active
             );
           })
           .catch((err) => {
-            alert(
-              "getUserMedia error:\n" + err.name + " — " + err.message
-            );
+            alert("getUserMedia error:\n" + err.name + " — " + err.message);
             alert("SET_CAMERA_PERMISSION: false");
           });
       };
