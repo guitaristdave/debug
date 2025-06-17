@@ -12,7 +12,7 @@ export default {
       seventh: null,
       eighth: null,
       ninth: null,
-      tenth: null,
+      tenth: null
     };
   },
   methods: {
@@ -34,7 +34,6 @@ export default {
             this.third = "Line 29: SET_CAMERA_PERMISSION: false";
           });
       };
-
       if (!navigator.permissions || !navigator.permissions.query) {
         this.forth =
           "Line 35: Permissions API not supported. Fallback to getUserMedia.";
@@ -44,7 +43,6 @@ export default {
           const result = await navigator.permissions.query({ name: "camera" });
           this.fifth =
             "Line 41: Permissions query result.state: " + result.state;
-
           if (result.state === "granted") {
             this.sixth = "Line 48: SET_CAMERA_PERMISSION: granted";
           } else if (result.state === "prompt") {
@@ -55,7 +53,6 @@ export default {
             this.eighth =
               "Line 55: SET_CAMERA_PERMISSION: denied. Access blocked.";
           }
-
           result.onchange = () => {
             this.ninth = "Line 59: Permissions changed to: " + result.state;
           };
@@ -64,13 +61,13 @@ export default {
           askPermissions();
         }
       }
-    },
+    }
   },
   computed: {
     isIOS() {
       return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -92,3 +89,12 @@ export default {
     <p v-if="isIOS">это iOS</p>
   </div>
 </template>
+
+<style>
+button {
+  border: 1px solid black;
+  background-color: yellow;
+  color: black;
+  padding: 15px;
+}
+</style>
