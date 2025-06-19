@@ -21,33 +21,25 @@ export default {
     },
     async checkCameraPermission() {
       const askPermissions = () => {
+        this.add('askPermissions')
         navigator.mediaDevices
           .getUserMedia({ video: true })
           .then((media) => {
-            this.first =
-              "Line 23: SET_CAMERA_PERMISSION (getUserMedia success)\nmedia.active: " +
-              media.active;
+            this.add('then', media)
           })
           .catch((err) => {
-            this.second =
-              "Line 28: getUserMedia error:\n" + err.name + " — " + err.message;
-            this.third = "Line 29: SET_CAMERA_PERMISSION: false";
+            this.add('catch', err)
+            
           });
       };
       if (!navigator.permissions || !navigator.permissions.query) {
-        this.forth =
-          "Line 35: Permissions API not supported. Fallback to getUserMedia.";
+         this.add('navigator', navigator)
         askPermissions();
       } else {
         try {
           const result = await navigator.permissions.query({ name: "camera" });
-          this.fifth =
-            "Line 41: Permissions query result.state: " + result.state;
           if (result.state === "granted") {
-            this.sixth = "Line 48: SET_CAMERA_PERMISSION: granted";
           } else if (result.state === "prompt") {
-            this.seventh =
-              "Line 51: SET_CAMERA_PERMISSION: prompt, requesting access...";
             askPermissions();
           } else if (result.state === "denied") {
             this.eighth =
@@ -61,6 +53,9 @@ export default {
           askPermissions();
         }
       }
+    },
+    async add(...message) {
+      document.body.append(document.createElement('div').innerHTML = message.join('<br>'))
     },
   },
   computed: {
@@ -86,7 +81,7 @@ export default {
       <li>{{ ninth }}</li>
       <li>{{ tenth }}</li>
     </ol>
-    <p v-if="isIOS">это iOS</p>
+    <p v-if="!isIOS">это iOS</p>
   </div>
 </template>
 
